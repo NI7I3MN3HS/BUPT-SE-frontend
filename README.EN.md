@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/zclzone/vue-naive-admin">
+  <a href="https://github.com/NI7I3MN3HS/BUPT-SE-frontend">
     <img alt="Vue Naive Admin Logo" width="200" src="./src/assets/images/logo.png">
   </a>
 </p>
@@ -9,12 +9,12 @@
 
 <p align='center'>
   <b>英文</b> | 
-  <a href="https://github.com/zclzone/vue-naive-admin/blob/main/README.md">中文</a>
+  <a href="https://github.com/NI7I3MN3HS/BUPT-SE-frontend/blob/main/README.md">中文</a>
 </p>
 
 ### Introduction
 
-[Vue Naive Admin](https://github.com/zclzone/vue-naive-admin) is a **completely open source free and commercially allowed ** admin template，Based on the latest technology stack of front-end such as `Vue3、Vite3、Pinia、Unocss and Naive UI`. Compared with other more popular backend management templates, this project is more concise, lightweight, fresh style, very low learning costs, ideal for small and medium-sized projects or personal projects.
+Front-End Project for BUPT Software Engineering Major Assignment, Based on [Vue Naive Admin](https://github.com/zclzone/vue-naive-admin)
 
 ### Features
 
@@ -29,17 +29,6 @@
 - 🤹 Integrated `iconify` icon，support custom svg icons.
 - 🍇 Integrated `unocss`.
 
-### Preview
-
-[https://template.isme.top](https://template.isme.top)
-
-[https://base.isme.top](https://base.isme.top)
-
-### Docs
-
-[Vue Naive Admin Docs](https://zclzone.github.io/vue-naive-admin-docs)
-
-
 ### Getting Started
 
 ```shell
@@ -47,9 +36,9 @@
 git config --global core.autocrlf false
 
 # Clone Project
-git clone https://github.com/zclzone/vue-naive-admin.git
+git clone https://github.com/NI7I3MN3HS/BUPT-SE-frontend.git
 
-cd vue-naive-admin
+cd BUPT-SE-frontend
 
 # Install dependencies(Recommended use pnpm: https://pnpm.io/zh/installation)
 npm i -g pnpm # Installed and can be ignored
@@ -100,10 +89,10 @@ Vue Naive Admin
 |-- build                               // 构建相关配置
 |   |-- constant.js                     // 构建相关的常量
 |   |-- utils.js                        // 构建相关的工具方法
-|   |-- config                          
+|   |-- config
 |   |   |-- define.js                   // 注入全局常量，启动或打包后将添加到window中
 |   |   |-- proxy.js                    // 代理配置
-|   |-- plugin                          
+|   |-- plugin
 |   |   |-- html.js                     // vite-plugin-html插件，用于注入变量或者html标签
 |   |   |-- mock.js                     // vite-plugin-mock插件，处理mock
 |   |   |-- unplugin.js                 // unplugin相关插件，包含DefineOptions和自动导入
@@ -153,7 +142,7 @@ Vue Naive Admin
 |   |   |-- demo                        // 示例
 |   |   |-- error-page                  // 错误页
 |   |   |-- login                       // 登录页
-|   |   |-- workbench                   // 首页  
+|   |   |-- workbench                   // 首页
 |   |-- App.vue
 |   |-- main.js
 |-- .cz-config.js                       // git提交配置
@@ -167,7 +156,7 @@ Vue Naive Admin
 |-- .gitignore                          // git忽略
 |-- .prettierignore                     // prettier格式化忽略
 |-- commitlint.config.js                // commitlint规范配置
-|-- index.html                          
+|-- index.html
 |-- jsconfig.json                       // js配置
 |-- LICENSE                             // 协议
 |-- package.json                        // 依赖描述文件
@@ -178,31 +167,3 @@ Vue Naive Admin
 |-- unocss.config.js                    // unocss配置
 |-- vite.config.js                      // vite配置
 ```
-
-### TS version: Qs Admin
-
-#### source code
-
-- github: [https://github.com/zclzone/qs-admin](https://github.com/zclzone/qs-admin)
-- gitee: [https://gitee.com/zclzone/qs-admin-ts](https://gitee.com/zclzone/qs-admin-ts)
-
-#### preview
-
-- [https://admin.isme.top](https://admin.isme.top)
-- [https://zclzone.github.io/qs-admin](https://zclzone.github.io/qs-admin)
-
-### Open source projects that use this project:
-
-- [gin-vue-blog](https://github.com/szluyu99/gin-vue-blog): A full-stack blog project in Golang, the frontend of the blog backend is based on vue-naive-admin and integrates with a real backend service, implementing features such as backend-controlled routing.
-- [vue-fastapi-admin](https://github.com/mizhexiaoxiao/vue-fastapi-admin): A Python backend management project that integrates RBAC permission management, dynamic routing, and JWT authentication, helping small and medium-sized applications to quickly establish a foundation.
-
-### Communication group & About the author
-
-<a href="https://blog.isme.top/about/">
-  <img src="https://static.isme.top/images/about.png?t=123" style="max-width: 400px" />
-</a>
-
-
-
-
-

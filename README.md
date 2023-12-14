@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/zclzone/vue-naive-admin">
+  <a href="https://github.com/NI7I3MN3HS/BUPT-SE-frontend.git">
     <img alt="Vue Naive Admin Logo" width="200" src="./src/assets/images/logo.png">
   </a>
 </p>
@@ -9,18 +9,12 @@
 
 <p align='center'>
   <b>中文</b> | 
-  <a href="https://github.com/zclzone/vue-naive-admin/blob/main/README.EN.md">English</a>
+  <a href="https://github.com/NI7I3MN3HS/BUPT-SE-frontend/blob/main/README.EN.md">English</a>
 </p>
-
-> 🎉🎉🎉 2.0 已开源，全新重构，全面简化，后端使用 nestjs + mysql + typeOrm，[👉点击前往2.0版本 | 分支 2.x-beta](https://github.com/zclzone/vue-naive-admin/tree/2.x-beta),
-
-- 体验地址: [admin.isme.top](https://admin.isme.top)
-- 后端服务: [isme-nest-serve](https://github.com/zclzone/isme-nest-serve)
-- 文档: [vue-naive-admin-docs](https://docs.isme.top/web/#/624306705)
 
 ### 简介
 
-[Vue Naive Admin](https://github.com/zclzone/vue-naive-admin) 是一个 **开源免费且允许商用** 的后台管理模板，基于 `Vue3、Vite4、Pinia、Unocss 和 Naive UI` 等前端最新技术栈。相较于其他比较流行的后台管理模板，此项目更加简洁、轻量，风格清新，上手成本非常低，非常适合中小型项目或者个人项目。
+BUPT 软件工程大作业前端项目 基于[Vue Naive Admin](https://github.com/zclzone/vue-naive-admin)
 
 ### 功能
 
@@ -32,28 +26,8 @@
 - 🍉 集成 `mock` 接口服务，dev 环境和发布环境都支持，可动态配置是否启用 mock 服务，不启用时不会加载 mock 包，减少打包体积
 - 🍍 集成 `pinia`，vuex 的替代方案，轻量、简单、易用
 - 📦 集成 `unplugin` 插件，自动导入，解放双手，开发效率直接起飞
-- 🤹 集成 `iconify` 图标，支持自定义 svg 图标, 优雅使用icon
+- 🤹 集成 `iconify` 图标，支持自定义 svg 图标, 优雅使用 icon
 - 🍇 集成 `unocss`，antfu 开源的原子 css 解决方案，非常轻量
-
-> ✨✨ 双十一香港特惠服务器推荐，~~**2C4G 100M** `71/年` `142/两年`~~，[👉点击前往](https://blog.isme.top/vps-recommend/)
-
-### 预览
-
-[https://template.isme.top](https://template.isme.top)
-
-[https://base.isme.top](https://base.isme.top)
-
-### 文档
-
-项目文档: [Vue Naive Admin Docs](https://zclzone.github.io/vue-naive-admin-docs)
-
-从0到1搭建后台: [从0到1，带你搭建Vite+Vue3+Pinia+Naive UI后台](https://juejin.cn/column/7093180796424421384)
-
-如何安装pnpm: [安装pnpm](docs/安装pnpm.md)
-
-如何使用图标: [使用图标](docs/使用图标.md)
-
-如何使用unocss: [保熟的UnoCSS使用指北，优雅使用antfu大佬的原子化CSS](https://juejin.cn/post/7142466784971456548)
 
 ### 快速开始
 
@@ -63,10 +37,10 @@
 git config --global core.autocrlf false
 
 # 克隆项目
-git clone https://github.com/zclzone/vue-naive-admin.git
+git clone https://github.com/NI7I3MN3HS/BUPT-SE-frontend.git
 
 # 进入项目目录
-cd vue-naive-admin
+cd BUPT-SE-frontend
 
 # 安装依赖(建议使用pnpm: https://pnpm.io/zh/installation)
 npm i -g pnpm # 装了可忽略
@@ -105,7 +79,6 @@ pnpm preview
 pnpm cz
 ```
 
-
 ### 目录说明
 
 ```
@@ -118,10 +91,10 @@ Vue Naive Admin
 |-- build                               // 构建相关配置
 |   |-- constant.js                     // 构建相关的常量
 |   |-- utils.js                        // 构建相关的工具方法
-|   |-- config                          
+|   |-- config
 |   |   |-- define.js                   // 注入全局常量，启动或打包后将添加到window中
 |   |   |-- proxy.js                    // 代理配置
-|   |-- plugin                          
+|   |-- plugin
 |   |   |-- html.js                     // vite-plugin-html插件，用于注入变量或者html标签
 |   |   |-- mock.js                     // vite-plugin-mock插件，处理mock
 |   |   |-- unplugin.js                 // unplugin相关插件，包含DefineOptions和自动导入
@@ -171,7 +144,7 @@ Vue Naive Admin
 |   |   |-- demo                        // 示例
 |   |   |-- error-page                  // 错误页
 |   |   |-- login                       // 登录页
-|   |   |-- workbench                   // 首页  
+|   |   |-- workbench                   // 首页
 |   |-- App.vue
 |   |-- main.js
 |-- .cz-config.js                       // git提交配置
@@ -185,7 +158,7 @@ Vue Naive Admin
 |-- .gitignore                          // git忽略
 |-- .prettierignore                     // prettier格式化忽略
 |-- commitlint.config.js                // commitlint规范配置
-|-- index.html                          
+|-- index.html
 |-- jsconfig.json                       // js配置
 |-- LICENSE                             // 协议
 |-- package.json                        // 依赖描述文件
@@ -196,34 +169,3 @@ Vue Naive Admin
 |-- unocss.config.js                    // unocss配置
 |-- vite.config.js                      // vite配置
 ```
-
-### TS 版本: Qs Admin
-
-#### 源码
-
-- github: [https://github.com/zclzone/qs-admin](https://github.com/zclzone/qs-admin)
-- gitee: [https://gitee.com/zclzone/qs-admin-ts](https://gitee.com/zclzone/qs-admin-ts)
-
-#### 预览
-
-- [https://admin.isme.top](https://admin.isme.top)
-- [https://zclzone.github.io/qs-admin](https://zclzone.github.io/qs-admin)
-
-### 使用该项目的开源项目
-
-- [gin-vue-blog](https://github.com/szluyu99/gin-vue-blog): Golang 全栈博客项目, 博客后台的前端基于 vue-naive-admin，对接真实后端服务，实现了后端控制路由等特性。
-- [vue-fastapi-admin](https://github.com/mizhexiaoxiao/vue-fastapi-admin): Python 后台管理项目, 融合了 RBAC 权限管理、动态路由，JWT 鉴权，助力中小型应用快速搭建。
-
-### 入群交流 & 关于作者
-
-<a href="https://blog.isme.top/about/">
-  <img src="https://static.isme.top/images/about.png?t=123" style="max-width: 400px" />
-</a>
-
-### ☕ 赞助我
-
-> 开源不易，请作者喝杯咖啡吧
-<p>
-  <img src="https://static.isme.top/images/zhifu_weixin.jpg" style="width: 220px" />
-  <img src="https://static.isme.top/images/zhifu_zhifubao.jpg" style="width: 220px" />
-</p>
