@@ -26,29 +26,32 @@
     <n-space justify="center">
       <n-list bordered style="min-width: 600px" id="bill-container">
         <template #header>
-          <div style="font-weight: bolder; font-size: 32px">巴普特酒店</div>
+          <div class="text-32 font-bold flex justify-center">巴普特酒店账单</div>
         </template>
-        <template #footer>带给你温馨每一天</template>
+        <template #footer>
+          <div class="font-bold flex justify-center">带给你温馨每一天!</div>
+        </template>
         <n-list-item>
           <n-thing>
             <span style="font-weight: bolder">账单号:</span>
-            <span>{{ tableData[0]?.bill_id }}</span>
+            <span class="ml-5">{{ tableData[0]?.bill_id }}</span>
             <br />
             <span style="font-weight: bolder">房间号:</span>
-            <span>{{ tableData[0]?.room_id }}</span>
+            <span class="ml-5">{{ tableData[0]?.room_id }}</span>
             <br />
             <span style="font-weight: bolder">总计:</span>
-            <span>{{ tableData[0]?.total_cost }}</span>
+            <span class="ml-5">{{ tableData[0]?.total_cost }}</span>
+            <span class="ml-5">元</span>
             <br />
           </n-thing>
         </n-list-item>
         <n-list-item>
           <n-thing>
             <span style="font-weight: bolder">入住时间:</span>
-            <span>{{ tableData[0]?.checkin_time }}</span>
+            <span class="ml-5">{{ tableData[0]?.checkin_time }}</span>
             <br />
             <span style="font-weight: bolder">退房时间:</span>
-            <span>{{ tableData[0]?.checkout_time }}</span>
+            <span class="ml-5">{{ tableData[0]?.checkout_time }}</span>
           </n-thing>
         </n-list-item>
       </n-list>
@@ -60,7 +63,7 @@
 import api from './api'
 import html2canvas from 'html2canvas'
 import * as XLSX from 'xlsx'
-import { formatDateTime, renderIcon, isNullOrUndef } from '@/utils'
+import { formatDateTime, renderIcon, isNullOrUndef, formatMoney } from '@/utils'
 
 defineOptions({ name: 'BillList' })
 
@@ -81,13 +84,15 @@ async function handleSearch() {
     return
   }
   try {
-    const data = await api.getBill(queryItems.value.room_id)
-    tableData.value = data
-    tableData.value.forEach((item) => {
-      item.checkin_time = formatDateTime(item.checkin_time)
-      item.checkout_time = formatDateTime(item.checkout_time)
-    })
+    const bill = await api.getBill(queryItems.value.room_id)
+    // 格式化时间
+    bill.checkin_time = formatDateTime(bill.checkin_time)
+    bill.checkout_time = formatDateTime(bill.checkout_time)
+    // 格式化金额
+    bill.total_cost = formatMoney(bill.total_cost)
+    tableData.value = [bill]
   } catch (error) {
+    $message.error('获取账单失败, 请检查房间号是否正确')
     console.error('Error in handleSearch:', error)
   }
 }
@@ -123,7 +128,7 @@ async function handleExportToExcel() {
 
   // 创建工作簿并添加工作表
   const wb = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(wb, ws, 'Bill Data')
+  XLSX.utils.book_append_sheet(wb, ws, '房间账单')
 
   // 生成 Excel 文件并下载
   XLSX.writeFile(wb, `房间${queryItems.value.room_id}账单.xlsx`)

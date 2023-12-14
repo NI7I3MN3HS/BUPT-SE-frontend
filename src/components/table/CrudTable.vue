@@ -18,6 +18,7 @@
 
 <script setup>
 import { utils, writeFile } from 'xlsx'
+import { formatMoney, formatDateTime, formatTemperature } from '@/utils'
 
 const props = defineProps({
   /**
@@ -129,16 +130,44 @@ function onChecked(rowKeys) {
     emit('onChecked', rowKeys)
   }
 }
-function handleExport(columns = props.columns, data = tableData.value) {
+function handleExport(columns = props.columns, data = tableData.value, fileName = '数据报表') {
   if (!data?.length) return $message.warning('没有数据')
   const columnsData = columns.filter((item) => !!item.title && !item.hideInExcel)
   const thKeys = columnsData.map((item) => item.key)
   const thData = columnsData.map((item) => item.title)
-  const trData = data.map((item) => thKeys.map((key) => item[key]))
+  const trData = data.map((item) => {
+    return thKeys.map((key) => {
+      // 检查并格式化金钱字段
+      if (key === 'current_cost' || key === 'total_cost') {
+        return formatMoney(item[key])
+      }
+      // 检查并格式化时间字段
+      else if (key === 'request_time' || key === 'start_time' || key === 'end_time') {
+        return formatDateTime(item[key])
+      }
+      // 检查并格式化温度字段
+      else if (
+        key === 'initial_temperature' ||
+        key === 'current_temperature' ||
+        key === 'target_temperature'
+      ) {
+        return formatTemperature(item[key])
+      }
+      // 特别处理身份证字段
+      else if (key === 'identity_card') {
+        // 使用单引号前缀来确保Excel将其视为文本
+        return item[key].toString()
+      }
+      // 其他字段保持原样
+      else {
+        return item[key]
+      }
+    })
+  })
   const sheet = utils.aoa_to_sheet([thData, ...trData])
   const workBook = utils.book_new()
-  utils.book_append_sheet(workBook, sheet, '数据报表')
-  writeFile(workBook, '数据报表.xlsx')
+  utils.book_append_sheet(workBook, sheet, `${fileName}`)
+  writeFile(workBook, `${fileName}.xlsx`)
 }
 
 defineExpose({

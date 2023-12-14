@@ -1,77 +1,91 @@
 <template>
-  <AppPage :show-footer="true">
+  <AppPage :show-footer="false">
     <div class="flex">
-      <n-card class="w-30%">
+      <n-card class="w-60%">
         <div class="flex items-center">
           <n-avatar round :size="60" :src="userStore.avatar" />
           <div class="ml-20 flex-col">
-            <span class="text-20 opacity-80">Hello, {{ userStore.name }}</span>
-            <span class="mt-4 opacity-50">今日事，今日毕。</span>
+            <span class="text-20 opacity-80">Hello, 尊敬的{{ userStore.name }}</span>
+            <span class="mt-4 opacity-50">欢迎来到巴普特廉价酒店</span>
           </div>
         </div>
 
-        <p class="mt-20 text-14 opacity-60">一个人几乎可以在任何他怀有无限热忱的事情上成功。</p>
-        <p class="mt-12 text-right text-12 opacity-40">—— 查尔斯·史考伯</p>
+        <p class="mt-20 text-18 opacity-80">巴普特廉价酒店，您的理想住宿伴侣。</p>
       </n-card>
-      <n-card class="ml-12 w-70%">
-        <h3 class="text-20 font-normal opacity-90">⚡️欢迎使用 Vue Naive Admin</h3>
-        <p class="mt-8 opacity-60">
-          这是一款基于 Vue3 + Vite + Pinia + Unocss + Naive UI 的轻量级后台管理模板！！
-        </p>
-        <footer class="mt-24 flex items-center justify-end">
-          <n-button
-            tag="a"
-            href="https://zclzone.github.io/vue-naive-admin-docs"
-            target="_blank"
-            type="primary"
-            ghost
-          >
-            开发文档
-          </n-button>
-          <n-button
-            tag="a"
-            href="https://github.com/zclzone/vue-naive-admin"
-            target="_blank"
-            type="primary"
-            class="ml-12"
-          >
-            代码仓库
-          </n-button>
-        </footer>
+      <n-card class="ml-12 w-40%">
+        <div class="ml-20 flex-col items-center">
+          <span class="text-5rem font-500 opacity-90">房间温度</span>
+          <span class="text-12rem font-normal opacity-90">{{ roomtemp }}°</span>
+        </div>
       </n-card>
     </div>
     <div class="mt-12 flex">
-      <n-card title="项目" segmented>
-        <template #header-extra>
-          <n-button text type="primary">更多</n-button>
-        </template>
-        <div class="flex flex-wrap justify-between">
-          <n-card
-            v-for="i in 6"
-            :key="i"
-            size="small"
-            class="my-6 w-320 flex-shrink-0 cursor-pointer hover:card-shadow"
-            title="Vue Naive Admin"
-          >
-            <p class="op-60">一个基于 Vue3.0、Vite、Naive UI 的轻量级后台管理模板</p>
-          </n-card>
-          <div h-0 w-300></div>
-          <div h-0 w-300></div>
-          <div h-0 w-300></div>
-          <div h-0 w-300></div>
+      <n-card title="空调面板" segmented>
+        <div class="ml-20 flex-col items-center">
+          <span class="text-5rem font-500 opacity-90">空调温度</span>
+          <span class="text-12rem font-normal opacity-90">{{ actemp }}°</span>
+          <div class="relative flex mt-20 mb-20">
+            <span class="absolute-center">
+              <TheIcon icon="material-symbols:ac-unit" :size="18" v-if="acon" />
+            </span>
+            <span class="absolute-center ml-35">
+              <TheIcon
+                icon="material-symbols-light:stat-1-rounded"
+                :size="18"
+                v-if="fanspeed === 1 && acon"
+              />
+              <TheIcon
+                icon="material-symbols-light:stat-2-rounded"
+                :size="18"
+                v-if="fanspeed === 2 && acon"
+              />
+              <TheIcon
+                icon="material-symbols-light:stat-3-rounded"
+                :size="18"
+                v-if="fanspeed === 3 && acon"
+              />
+            </span>
+          </div>
+          <n-slider
+            class="w-50%"
+            v-model:value="actemp"
+            :step="1"
+            :tooltip="false"
+            :min="16"
+            :max="30"
+            @update:value="handleSlider"
+            :disabled="!acon"
+          />
         </div>
+        <footer class="flex items-center justify-center">
+          <div class="mt-20 flex-col items-center">
+            <n-button class="ml-20" round @click="handleTempMinus">
+              <TheIcon icon="ic:round-minus" :size="18" />
+            </n-button>
+          </div>
+          <div class="mt-20 flex-col items-center">
+            <n-button class="ml-20" round @click="handleACPower">
+              <TheIcon icon="ion:md-power" :size="18" />
+            </n-button>
+          </div>
+          <div class="mt-20 flex-col items-center">
+            <n-button class="ml-20" round @click="handleFanSpeed">
+              <TheIcon icon="material-symbols-light:toys-fan" :size="18" />
+            </n-button>
+          </div>
+          <div class="mt-20 flex-col items-center">
+            <n-button class="ml-20" round @click="handleTempPlus">
+              <TheIcon icon="ic:round-plus" :size="18" />
+            </n-button>
+          </div>
+        </footer>
       </n-card>
 
-      <n-card class="ml-12" title="技术栈" segmented>
-        <VChart :option="skillsOption" class="wh-full" autoresize />
+      <n-card class="ml-12" title="花费" segmented>
+        <VChart :option="costChartOption" class="wh-full" autoresize />
       </n-card>
     </div>
-
-    <n-card class="mt-12" title="趋势" segmented>
-      <VChart :option="trendOption" class="h-480 w-full" autoresize />
-    </n-card>
   </AppPage>
-  {{ userid }}
 </template>
 <script setup>
 import * as echarts from 'echarts/core'
@@ -82,6 +96,9 @@ import { CanvasRenderer } from 'echarts/renderers'
 import VChart from 'vue-echarts'
 
 import { useUserStore } from '@/store'
+import api from './api'
+
+defineOptions({ name: 'RoomDashBoard' })
 
 const userStore = useUserStore()
 
@@ -98,63 +115,57 @@ echarts.use([
   PieChart,
 ])
 
-const trendOption = {
+const roomtemp = ref(30)
+const actemp = ref(25)
+const fanspeed = ref(0)
+const cost = ref(0)
+const costHistory = ref([])
+
+const costChartOption = ref({
   tooltip: {
-    trigger: 'axis',
+    trigger: 'axis', // 'item' 对单个数据项生效，'axis' 对整个类目轴生效
     axisPointer: {
-      type: 'cross',
-      crossStyle: {
-        color: '#999',
-      },
+      // 指示器类型
+      type: 'shadow', // 默认为直线，可选为：'line' | 'shadow'
+    },
+    formatter: (params) => {
+      // params 是一个包含当前点信息的数组，你可以根据需要格式化输出
+      return `${params[0].axisValueLabel}: ${params[0].data}￥`
     },
   },
-  legend: {
-    top: '5%',
-    data: ['star', 'fork'],
+  xAxis: {
+    type: 'category',
+    data: [], // 这里将存储每次更新时的时间戳或其他标识符
   },
-  xAxis: [
-    {
-      type: 'category',
-      data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-      axisPointer: {
-        type: 'shadow',
-      },
-    },
-  ],
-  yAxis: [
-    {
-      type: 'value',
-      min: 0,
-      max: 3000,
-      interval: 500,
-      axisLabel: {
-        formatter: '{value}',
-      },
-    },
-    {
-      type: 'value',
-      min: 0,
-      max: 500,
-      interval: 100,
-      axisLabel: {
-        formatter: '{value}',
-      },
-    },
-  ],
+  yAxis: {
+    type: 'value',
+    min: 0, // Y 轴的最小值
+    max: 100, // Y 轴的最大值
+    interval: 20, // Y 轴每个刻度的间隔
+  },
   series: [
     {
-      name: 'star',
-      type: 'line',
-      data: [200, 320, 520, 550, 600, 805, 888, 950, 1300, 2503, 2702, 2712],
-    },
-    {
-      name: 'fork',
-      yAxisIndex: 1,
+      data: costHistory.value,
       type: 'bar',
-      data: [40, 72, 110, 115, 121, 175, 180, 201, 260, 398, 423, 455],
+      barWidth: '10px', // 控制柱子的宽度
     },
   ],
-}
+})
+
+// 观察 cost 的变化，并更新图表数据
+watch(cost, (newCost) => {
+  // 添加新的 cost 值
+  costHistory.value.push(newCost)
+
+  // 更新 xAxis 数据（例如，使用时间戳或简单的计数器）
+  costChartOption.value.xAxis.data.push(new Date().toLocaleTimeString())
+
+  // 确保数组不会无限增长（可根据需要调整）
+  if (costHistory.value.length > 10) {
+    costHistory.value.shift()
+    costChartOption.value.xAxis.data.shift()
+  }
+})
 
 const skillsOption = {
   tooltip: {
@@ -201,4 +212,91 @@ const skillsOption = {
     },
   ],
 }
+
+const acon = ref(false)
+
+const handleACPower = async () => {
+  if (!acon.value) {
+    const res = await api.acOn(userid.value)
+    if (res.msg === '开机成功') {
+      $message.success('空调已开启')
+      acon.value = !acon.value
+      return
+    }
+  } else if (acon.value) {
+    const res = await api.acOff(userid.value)
+    if (res.msg === '关机成功') {
+      $message.success('空调已关闭')
+      acon.value = !acon.value
+      return
+    }
+  }
+}
+
+const handleFanSpeed = () => {
+  if (!acon.value) return
+  fanspeed.value = fanspeed.value === 3 ? 1 : fanspeed.value + 1
+  setAcFanSpeed()
+}
+
+const handleSlider = (value) => {
+  if (!acon.value) return
+  setAcTemp()
+}
+
+const handleTempPlus = () => {
+  if (!acon.value) return
+  actemp.value = actemp.value === 30 ? 30 : actemp.value + 1
+  setAcTemp()
+}
+
+const handleTempMinus = () => {
+  if (!acon.value) return
+  actemp.value = actemp.value === 16 ? 16 : actemp.value - 1
+  setAcTemp()
+}
+
+const setAcTemp = async () => {
+  const res = await api.setTemp({ room_id: userid.value, target_temp: actemp.value })
+  if (res.msg === '修改成功') {
+    $message.success('温度设置成功')
+  }
+}
+
+const setAcFanSpeed = async () => {
+  //将风速数字转换为字符串
+  const fanSpeedMap = {
+    1: 'low',
+    2: 'medium',
+    3: 'high',
+  }
+
+  const res = await api.setWind({ room_id: userid.value, fan_speed: fanSpeedMap[fanspeed.value] })
+  if (res.msg === '修改成功') {
+    $message.success('风速设置成功')
+  }
+}
+
+//更新房间信息
+const updateRoomInfo = async () => {
+  const fanSpeedMap = {
+    high: 3,
+    medium: 2,
+    low: 1,
+  }
+  const res = await api.getRoomInfo(userid.value)
+  roomtemp.value = res.current_temperature
+  cost.value = res.total_cost
+  fanspeed.value = res.fan_speed = fanSpeedMap[res.fan_speed]
+}
+
+let timer = null
+//设置轮询，每秒更新房间信
+onActivated(() => {
+  timer = setInterval(updateRoomInfo, 2000)
+})
+
+onDeactivated(() => {
+  clearInterval(timer)
+})
 </script>

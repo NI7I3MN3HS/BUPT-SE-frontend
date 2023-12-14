@@ -88,3 +88,42 @@ export function useResize(el, cb) {
   observer.observe(el)
   return observer
 }
+
+/**
+ * 格式化金钱
+ * @param {number} money
+ * @param {number} decimals
+ * @param {string} decPoint
+ * @param {string} thousandsSep
+ * @return {string}
+ */
+
+export function formatMoney(money, decimals = 2, decPoint = '.', thousandsSep = ',') {
+  money = money * 1
+  decimals = decimals * 1
+  decPoint = decPoint !== undefined ? decPoint : '.'
+  thousandsSep = thousandsSep !== undefined ? thousandsSep : ','
+  let sign = money < 0 ? '-' : ''
+  let i = `${parseInt((money = Math.abs(money) || 0).toFixed(decimals), 10)}`
+  let j = i.length > 3 ? i.length % 3 : 0
+
+  return (
+    sign +
+    (j ? i.substring(0, j) + thousandsSep : '') +
+    i.substring(j).replace(/(\d{3})(?=\d)/g, `$1${thousandsSep}`) +
+    (decimals
+      ? decPoint +
+        Math.abs(money - i)
+          .toFixed(decimals)
+          .slice(2)
+      : '')
+  )
+}
+
+/**格式化温度
+ * @param {number} temperature
+ * @return {string}
+ */
+export function formatTemperature(temperature) {
+  return temperature.toFixed(1)
+}

@@ -92,10 +92,9 @@
 
 <script setup>
 import { NButton, NSwitch } from 'naive-ui'
-import { formatDateTime, renderIcon, isNullOrUndef } from '@/utils'
+import { formatDateTime, renderIcon, isNullOrUndef, formatTemperature } from '@/utils'
 import { useCRUDRoom } from '@/composables'
 import api from './api'
-import route from '../demo/route'
 import { router } from '@/router'
 
 defineOptions({ name: 'RoomList' })
@@ -139,8 +138,32 @@ const columns = [
   { title: '空调状态', key: 'status', width: 80, ellipsis: { tooltip: true } },
   { title: '房间号', key: 'room_id', width: 80, ellipsis: { tooltip: true } },
   { title: '身份证', key: 'identity_card', width: 80, ellipsis: { tooltip: true } },
-  { title: '初始温度', key: 'initial_temperature', width: 80 },
-  { title: '当前温度', key: 'current_temperature', width: 80, ellipsis: { tooltip: true } },
+  {
+    title: '初始温度',
+    key: 'initial_temperature',
+    width: 80,
+    render(row) {
+      return h('span', formatTemperature(row['initial_temperature']))
+    },
+  },
+  {
+    title: '当前温度',
+    key: 'current_temperature',
+    width: 80,
+    ellipsis: { tooltip: true },
+    render(row) {
+      return h('span', formatTemperature(row['current_temperature']))
+    },
+  },
+  {
+    title: '目标温度',
+    key: 'target_temperature',
+    width: 80,
+    ellipsis: { tooltip: true },
+    render(row) {
+      return h('span', formatTemperature(row['target_temperature']))
+    },
+  },
   { title: '风速', key: 'fan_speed', width: 80, ellipsis: { tooltip: true } },
   { title: '服务时间', key: 'server_time', width: 80, ellipsis: { tooltip: true } },
   { title: '总花费', key: 'total_cost', width: 80, ellipsis: { tooltip: true } },
