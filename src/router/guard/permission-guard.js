@@ -1,6 +1,6 @@
 import { getToken, refreshAccessToken, isNullOrWhitespace } from '@/utils'
 
-const WHITE_LIST = ['/login', '/404']
+const WHITE_LIST = ['/login', '/404', '/intro']
 export function createPermissionGuard(router) {
   router.beforeEach(async (to) => {
     const token = getToken()

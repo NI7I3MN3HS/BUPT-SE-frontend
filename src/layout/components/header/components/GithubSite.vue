@@ -6,6 +6,6 @@
 
 <script setup>
 function handleLinkClick() {
-  window.open('https://github.com/zclzone/vue-naive-admin')
+  window.open('https://github.com/emt0re0/software-engineering')
 }
 </script>

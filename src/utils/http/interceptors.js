@@ -28,7 +28,7 @@ export function reqReject(error) {
 export function resResolve(response) {
   // TODO: 处理不同的 response.headers
   const { data, status, config, statusText } = response
-  if (data?.code !== 0) {
+  if (data?.code && data?.code !== 0) {
     const code = data?.code ?? status
 
     /** 根据code处理对应的操作，并返回处理后的message */
@@ -51,7 +51,8 @@ export function resReject(error) {
   }
   const { data, status, config } = error.response
   const code = data?.code ?? status
-  const message = resolveResError(code, data?.message ?? error.message)
+  // 如果错误响应中包含 detail 字段，则优先使用该字段作为错误信息
+  const message = data?.detail ? data.detail : resolveResError(code, data?.message ?? error.message)
   /** 需要错误提醒 */
   !config?.noNeedTip && window.$message?.error(message)
   return Promise.reject({ code, message, error: error.response?.data || error.response })

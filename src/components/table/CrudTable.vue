@@ -89,7 +89,7 @@ async function handleQuery() {
     if (props.isPagination && props.remote) {
       paginationParams = { pageNo: pagination.page, pageSize: pagination.pageSize }
     }
-    const { data } = await props.getData({
+    const data = await props.getData({
       ...props.queryItems,
       ...props.extraParams,
       ...paginationParams,
@@ -142,6 +142,7 @@ function handleExport(columns = props.columns, data = tableData.value) {
 }
 
 defineExpose({
+  handleQuery,
   handleSearch,
   handleReset,
   handleExport,

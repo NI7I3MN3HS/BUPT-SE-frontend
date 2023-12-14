@@ -71,10 +71,9 @@
       <VChart :option="trendOption" class="h-480 w-full" autoresize />
     </n-card>
   </AppPage>
+  {{ userid }}
 </template>
-
 <script setup>
-import { useUserStore } from '@/store'
 import * as echarts from 'echarts/core'
 import { TooltipComponent, GridComponent, LegendComponent } from 'echarts/components'
 import { BarChart, LineChart, PieChart } from 'echarts/charts'
@@ -82,7 +81,11 @@ import { UniversalTransition } from 'echarts/features'
 import { CanvasRenderer } from 'echarts/renderers'
 import VChart from 'vue-echarts'
 
+import { useUserStore } from '@/store'
+
 const userStore = useUserStore()
+
+const userid = ref(userStore.userId)
 
 echarts.use([
   TooltipComponent,

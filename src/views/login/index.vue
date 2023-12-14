@@ -2,11 +2,11 @@
   <AppPage :show-footer="true" bg-cover :style="{ backgroundImage: `url(${bgImg})` }">
     <div
       style="transform: translateY(25px)"
-      class="m-auto max-w-700 min-w-345 f-c-c rounded-10 bg-white bg-opacity-60 p-15 card-shadow"
+      class="m-auto max-w-700 min-w-345 f-c-c rounded-10 bg-white bg-opacity-100 p-15 card-shadow"
       dark:bg-dark
     >
       <div hidden w-380 px-20 py-35 md:block>
-        <img src="@/assets/images/login_banner.webp" w-full alt="login_banner" />
+        <img src="@/assets/images/login_banner.png" w-full alt="login_banner" />
       </div>
 
       <div w-320 flex-col px-20 py-35>
@@ -14,12 +14,13 @@
           <img src="@/assets/images/logo.png" height="50" class="mr-10" />
           {{ title }}
         </h5>
-        <div mt-32>
+        <div mt-32 v-if="!isAdminLogin">
           <n-input
             v-model:value="loginInfo.name"
             autofocus
             class="h-48 items-center text-16"
-            placeholder="name"
+            placeholder="请输入房间号"
+            :allow-input="onlyAllowNumber"
             :maxlength="20"
           >
             <template #prefix>
@@ -27,13 +28,43 @@
             </template>
           </n-input>
         </div>
-        <div mt-32>
+        <div mt-32 v-if="!isAdminLogin">
           <n-input
             v-model:value="loginInfo.password"
             class="h-48 items-center text-16"
             type="password"
             show-password-on="mousedown"
-            placeholder="password"
+            placeholder="请输入身份证号"
+            :maxlength="20"
+            @keydown.enter="handleLogin"
+          >
+            <template #prefix>
+              <icon-ri:lock-password-line class="mr-8 text-20 opacity-40" />
+            </template>
+          </n-input>
+        </div>
+
+        <div mt-32 v-if="isAdminLogin">
+          <n-input
+            autofocus
+            class="h-48 items-center text-16"
+            placeholder="admin"
+            :disabled="true"
+            :maxlength="20"
+          >
+            <template #prefix>
+              <icon-material-symbols:account-circle-outline class="mr-8 text-20 opacity-40" />
+            </template>
+          </n-input>
+        </div>
+
+        <div mt-32 v-if="isAdminLogin">
+          <n-input
+            v-model:value="loginInfo.password"
+            class="h-48 items-center text-16"
+            type="password"
+            show-password-on="mousedown"
+            placeholder="请输入管理员密码"
             :maxlength="20"
             @keydown.enter="handleLogin"
           >
@@ -44,11 +75,19 @@
         </div>
 
         <div mt-20>
-          <n-checkbox
-            :checked="isRemember"
-            label="记住我"
-            :on-update:checked="(val) => (isRemember = val)"
-          />
+          <n-space justify="space-between">
+            <n-checkbox
+              :checked="isRemember"
+              label="记住我"
+              :on-update:checked="(val) => (isRemember = val)"
+            />
+            <n-button text color="#c29b73" @click="handleAdminLogin" v-if="!isAdminLogin">
+              管理员登陆
+            </n-button>
+            <n-button text color="#c29b73" @click="handleAdminLogin" v-if="isAdminLogin">
+              返回
+            </n-button>
+          </n-space>
         </div>
 
         <div mt-20>
@@ -72,11 +111,23 @@
 <script setup>
 import { lStorage, setToken } from '@/utils'
 import { useStorage } from '@vueuse/core'
-import bgImg from '@/assets/images/login_bg.webp'
+import bgImg from '@/assets/images/homepage.jpeg'
 import api from './api'
 import { addDynamicRoutes } from '@/router'
 
 const title = import.meta.env.VITE_TITLE
+
+const isAdminLogin = ref(false)
+
+function handleAdminLogin() {
+  loginInfo.value.name = isAdminLogin.value ? '' : 'admin'
+  isAdminLogin.value = !isAdminLogin.value
+}
+
+// 只允许输入数字
+function onlyAllowNumber(value) {
+  return !value || /^\d+$/.test(value)
+}
 
 const router = useRouter()
 const { query } = useRoute()
@@ -107,9 +158,23 @@ async function handleLogin() {
   try {
     loading.value = true
     $message.loading('正在验证...')
-    const res = await api.login({ name, password: password.toString() })
+    let token = ''
+    if (!isAdminLogin.value) {
+      const res = await api.guestlogin({ name, password: password.toString() })
+
+      if (res.msg === '登录成功') {
+        token = name
+      }
+    } else if (isAdminLogin.value) {
+      const res = await api.adminlogin({ password: password.toString() })
+
+      if (res.msg === '登录成功') {
+        token = 'admin'
+      }
+    }
+    //const res = await api.login({ name, password: password.toString() })
     $message.success('登录成功')
-    setToken(res.data.token)
+    setToken(token)
     if (isRemember.value) {
       lStorage.set('loginInfo', { name, password })
     } else {
